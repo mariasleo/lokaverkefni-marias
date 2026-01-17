@@ -1,4 +1,7 @@
+import { Routes, Route, Link } from "react-router-dom";
 import "./styles.css";
+import Recipes from "./pages/Recipes";
+import Category from "./pages/Category";
 
 export default function App() {
   return (
@@ -9,13 +12,14 @@ export default function App() {
             <div className="logo"></div>
             <h2>Lokaverkefni Marias</h2>
           </div>
+
           <nav className="nav">
-            <a className="nav-link" href="#">
+            <Link className="nav-link" to="/">
               Heim
-            </a>
-            <a className="nav-link" href="#">
+            </Link>
+            <Link className="nav-link" to="/recipes">
               Uppskriftir
-            </a>
+            </Link>
             <a className="nav-link" href="#">
               Uppáhald
             </a>
@@ -28,46 +32,57 @@ export default function App() {
 
       <main>
         <div className="container">
-          <section className="hero">
-            <h1>Veistu ekki hvað á að vera í matinn?</h1>
-            <p className="subtitle">
-              Við hjálpum þér að finna það sem þig langar í
-            </p>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <section className="hero">
+                    <h1>Veistu ekki hvað á að vera í matinn?</h1>
+                    <p className="subtitle">
+                      Við hjálpum þér að finna það sem þig langar í
+                    </p>
 
-            <div className="hero-actions">
-              <button className="btn">Uppskriftir</button>
-              <button className="btn secondary">Flokkar</button>
-            </div>
-          </section>
+                    <div className="hero-actions">
+                      <button className="btn">Uppskriftir</button>
+                      <button className="btn secondary">Flokkar</button>
+                    </div>
+                  </section>
 
-          <section className="featured">
-            <div className="section-head">
-              <h2>Skemmtilegar hugmyndir</h2>
-              <a className="section-link" href="#">
-                Sýna allar →
-              </a>
-            </div>
+                  <section className="featured">
+                    <div className="section-head">
+                      <h2>Skemmtilegar hugmyndir</h2>
+                      <a className="section-link" href="#">
+                        Sýna allar →
+                      </a>
+                    </div>
 
-            <div className="card-grid">
-              <div className="card">
-                <div className="card-img"></div>
-                <h3>Rjóma Pasta</h3>
-                <p className="subtitle">Ready in 25 min</p>
-              </div>
+                    <div className="card-grid">
+                      <div className="card">
+                        <div className="card-img"></div>
+                        <h3>Rjóma Pasta</h3>
+                        <p className="subtitle">Ready in 25 min</p>
+                      </div>
 
-              <div className="card">
-                <div className="card-img"></div>
-                <h3>Fiskur</h3>
-                <p className="subtitle">Ready in 30 min</p>
-              </div>
+                      <div className="card">
+                        <div className="card-img"></div>
+                        <h3>Fiskur</h3>
+                        <p className="subtitle">Ready in 30 min</p>
+                      </div>
 
-              <div className="card">
-                <div className="card-img"></div>
-                <h3>Kjúklingur</h3>
-                <p className="subtitle">Ready in 35 min</p>
-              </div>
-            </div>
-          </section>
+                      <div className="card">
+                        <div className="card-img"></div>
+                        <h3>Kjúklingur</h3>
+                        <p className="subtitle">Ready in 35 min</p>
+                      </div>
+                    </div>
+                  </section>
+                </>
+              }
+            />
+
+            <Route path="/recipes" element={<Recipes />} />
+          </Routes>
         </div>
       </main>
 
