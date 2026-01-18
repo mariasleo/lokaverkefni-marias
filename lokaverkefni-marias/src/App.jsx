@@ -2,6 +2,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import "./styles.css";
 import Recipes from "./pages/Recipes";
 import Category from "./pages/Category";
+import RecipeDetails from "./pages/RecipeDetails";
 
 export default function App() {
   return (
@@ -82,6 +83,8 @@ export default function App() {
             />
 
             <Route path="/recipes" element={<Recipes />} />
+            <Route path="/recipes/:category" element={<Category />} />
+            <Route path="/recipe/:id" element={<RecipeDetails />} />
           </Routes>
         </div>
       </main>
