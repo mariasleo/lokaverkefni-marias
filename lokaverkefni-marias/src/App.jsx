@@ -1,6 +1,7 @@
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./styles.css";
+import logo from "./assets/imatinn-logo.png";
 
 import Recipes from "./pages/Recipes";
 import Category from "./pages/Category";
@@ -10,6 +11,7 @@ import Favorites from "./pages/Favorites";
 export default function App() {
   const navigate = useNavigate();
 
+  const [query, setQuery] = useState("");
   const [featured, setFeatured] = useState([]);
   const [featuredLoading, setFeaturedLoading] = useState(true);
   const [featuredError, setFeaturedError] = useState("");
@@ -79,9 +81,20 @@ export default function App() {
             <Link className="nav-link" to="/favorites">
               Uppáhald
             </Link>
-            <a className="nav-link" href="#">
-              Meira
-            </a>
+
+            <input
+              className="nav-search"
+              type="text"
+              placeholder="Leita að uppskrift..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  navigate(`/recipes?search=${query}`);
+                  setQuery("");
+                }
+              }}
+            />
           </nav>
         </div>
       </header>
@@ -103,9 +116,20 @@ export default function App() {
                       <div className="hero-actions">
                         <button
                           className="btn"
-                          onClick={() => navigate("/recipes")}
+                          onClick={async () => {
+                            try {
+                              const res = await fetch(
+                                "https://www.themealdb.com/api/json/v1/1/random.php",
+                              );
+                              const data = await res.json();
+                              const id = data.meals?.[0]?.idMeal;
+                              if (id) navigate(`/recipe/${id}`);
+                            } catch (e) {
+                              alert("Tókst ekki að sækja uppskrift ");
+                            }
+                          }}
                         >
-                          Uppskriftir
+                          Veldu fyrir mig
                         </button>
                         <button
                           className="btn secondary"
@@ -201,7 +225,9 @@ export default function App() {
 
       <footer>
         <div className="container">
-          <small>© {new Date().getFullYear()} Uppskriftir</small>
+          <small>
+            © {new Date().getFullYear()} Lokaverkefni 1.önn - Marías Leó
+          </small>
         </div>
       </footer>
     </div>
