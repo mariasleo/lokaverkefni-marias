@@ -35,10 +35,8 @@ export default function RecipeDetails() {
 
         const data = await res.json();
         const found = data.meals?.[0] ?? null;
-
         setMeal(found);
 
-        // ✅ sync favorite state with localStorage
         if (found) {
           setFav(isFavorite(found.idMeal));
         }
@@ -51,6 +49,12 @@ export default function RecipeDetails() {
 
     loadMeal();
   }, [id]);
+
+  function handleFav() {
+    if (!meal) return;
+    toggleFavorite(meal.idMeal);
+    setFav(isFavorite(meal.idMeal));
+  }
 
   if (loading) return <p className="subtitle">Sæki uppskrift…</p>;
 
@@ -78,22 +82,17 @@ export default function RecipeDetails() {
         {meal.strCategory} • {meal.strArea}
       </p>
 
-      {/* ✅ Favorite button */}
-      <div style={{ marginTop: 10, marginBottom: 10 }}>
-        <button
-          className="btn"
-          onClick={() => {
-            const nextIds = toggleFavorite(meal.idMeal);
-            setFav(nextIds.includes(meal.idMeal));
-          }}
-        >
-          {fav ? "Fjarlægja úr uppáhaldi" : "Setja í uppáhald"}
-        </button>
-      </div>
+      <button className="btn" onClick={handleFav}>
+        {fav ? "Fjarlægja úr uppáhaldi" : "Setja í uppáhald"}
+      </button>
 
-      <img className="details-img" src={meal.strMealThumb} alt={meal.strMeal} />
+      <div className="details-top">
+        <img
+          className="details-img"
+          src={meal.strMealThumb}
+          alt={meal.strMeal}
+        />
 
-      <div className="details-grid">
         <div className="details-box">
           <h2>Hráefni</h2>
           <ul>
@@ -104,13 +103,13 @@ export default function RecipeDetails() {
             ))}
           </ul>
         </div>
+      </div>
 
-        <div className="details-box">
-          <h2>Leiðbeiningar</h2>
-          <p className="subtitle" style={{ whiteSpace: "pre-line" }}>
-            {meal.strInstructions}
-          </p>
-        </div>
+      <div className="details-box details-instructions">
+        <h2>Leiðbeiningar</h2>
+        <p className="subtitle" style={{ whiteSpace: "pre-line" }}>
+          {meal.strInstructions}
+        </p>
       </div>
     </div>
   );

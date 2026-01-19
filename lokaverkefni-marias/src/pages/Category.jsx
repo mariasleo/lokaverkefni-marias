@@ -53,11 +53,9 @@ export default function Category() {
         </div>
       </div>
 
-      {/* STATES */}
       {loading && <p className="subtitle">Sæki uppskriftir…</p>}
       {error && <p className="subtitle">{error}</p>}
 
-      {/* MEALS */}
       {!loading && !error && (
         <div className="card-grid">
           {meals.map((meal) => (
