@@ -3,17 +3,46 @@ import "./styles.css";
 import Recipes from "./pages/Recipes";
 import Category from "./pages/Category";
 import RecipeDetails from "./pages/RecipeDetails";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Favorites from "./pages/Favorites";
 
 export default function App() {
+  const navigate = useNavigate();
+
+  const [featured, setFeatured] = useState([]);
+  const [featuredLoading, setFeaturedLoading] = useState(true);
+  const [featuredError, setFeaturedError] = useState("");
+
+  useEffect(() => {
+    async function loadFeatured() {
+      try {
+        setFeaturedLoading(true);
+        setFeaturedError("");
+
+        const res = await fetch(
+          "https://www.themealdb.com/api/json/v1/1/search.php?f=a",
+        );
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const data = await res.json();
+        const list = data.meals ?? [];
+
+        const shuffled = [...list].sort(() => Math.random() - 0.5);
+        setFeatured(shuffled.slice(0, 4));
+      } catch (e) {
+        setFeaturedError("Tókst ekki að sækja hugmyndir.");
+      } finally {
+        setFeaturedLoading(false);
+      }
+    }
+
+    loadFeatured();
+  }, []);
   return (
     <div>
       <header>
-        <div className="container header-inner">
-          <div className="header-left">
-            <div className="logo"></div>
-            <h2>Lokaverkefni Marias</h2>
-          </div>
-
+        <div className="container">
           <nav className="nav">
             <Link className="nav-link" to="/">
               Heim
@@ -21,9 +50,9 @@ export default function App() {
             <Link className="nav-link" to="/recipes">
               Uppskriftir
             </Link>
-            <a className="nav-link" href="#">
+            <Link className="nav-link" to="/favorites">
               Uppáhald
-            </a>
+            </Link>
             <a className="nav-link" href="#">
               Meira
             </a>
@@ -39,43 +68,65 @@ export default function App() {
               element={
                 <>
                   <section className="hero">
-                    <h1>Veistu ekki hvað á að vera í matinn?</h1>
-                    <p className="subtitle">
-                      Við hjálpum þér að finna það sem þig langar í
-                    </p>
+                    <div className="hero-box hero-grid">
+                      <div>
+                        <h1>Veistu ekki hvað á að vera í matinn?</h1>
+                        <p className="subtitle">
+                          Við hjálpum þér að finna það sem þig langar í
+                        </p>
+                      </div>
 
-                    <div className="hero-actions">
-                      <button className="btn">Uppskriftir</button>
-                      <button className="btn secondary">Flokkar</button>
+                      <div className="hero-actions">
+                        <button className="btn">Uppskriftir</button>
+                        <button className="btn secondary">Flokkar</button>
+                      </div>
                     </div>
                   </section>
 
                   <section className="featured">
                     <div className="section-head">
                       <h2>Skemmtilegar hugmyndir</h2>
-                      <a className="section-link" href="#">
+                      <a className="section-link" href="/recipes">
                         Sýna allar →
                       </a>
                     </div>
 
                     <div className="card-grid">
-                      <div className="card">
-                        <div className="card-img"></div>
-                        <h3>Rjóma Pasta</h3>
-                        <p className="subtitle">Ready in 25 min</p>
-                      </div>
+                      {featuredLoading && (
+                        <p className="subtitle">Sæki hugmyndir…</p>
+                      )}
+                      {featuredError && (
+                        <p className="subtitle">{featuredError}</p>
+                      )}
 
-                      <div className="card">
-                        <div className="card-img"></div>
-                        <h3>Fiskur</h3>
-                        <p className="subtitle">Ready in 30 min</p>
-                      </div>
+                      {!featuredLoading &&
+                        !featuredError &&
+                        featured.map((meal, idx) => (
+                          <div
+                            key={meal.idMeal}
+                            className="card"
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => navigate(`/recipe/${meal.idMeal}`)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ")
+                                navigate(`/recipe/${meal.idMeal}`);
+                            }}
+                          >
+                            <div
+                              className="card-img"
+                              style={{
+                                backgroundImage: `url(${meal.strMealThumb})`,
+                              }}
+                            ></div>
 
-                      <div className="card">
-                        <div className="card-img"></div>
-                        <h3>Kjúklingur</h3>
-                        <p className="subtitle">Ready in 35 min</p>
-                      </div>
+                            <h3>{meal.strMeal}</h3>
+
+                            <p className="subtitle">
+                              Ready in {25 + idx * 5} min
+                            </p>
+                          </div>
+                        ))}
                     </div>
                   </section>
                 </>
@@ -85,6 +136,7 @@ export default function App() {
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/recipes/:category" element={<Category />} />
             <Route path="/recipe/:id" element={<RecipeDetails />} />
+            <Route path="/favorites" element={<Favorites />} />
           </Routes>
         </div>
       </main>

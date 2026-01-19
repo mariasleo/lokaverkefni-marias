@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { isFavorite, toggleFavorite } from "../favorites";
 
 function getIngredients(meal) {
   const items = [];
@@ -19,6 +20,7 @@ export default function RecipeDetails() {
   const [meal, setMeal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [fav, setFav] = useState(false);
 
   useEffect(() => {
     async function loadMeal() {
@@ -32,7 +34,14 @@ export default function RecipeDetails() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const data = await res.json();
-        setMeal(data.meals?.[0] ?? null);
+        const found = data.meals?.[0] ?? null;
+
+        setMeal(found);
+
+        // ✅ sync favorite state with localStorage
+        if (found) {
+          setFav(isFavorite(found.idMeal));
+        }
       } catch (e) {
         setError("Tókst ekki að sækja uppskrift.");
       } finally {
@@ -68,6 +77,19 @@ export default function RecipeDetails() {
       <p className="subtitle">
         {meal.strCategory} • {meal.strArea}
       </p>
+
+      {/* ✅ Favorite button */}
+      <div style={{ marginTop: 10, marginBottom: 10 }}>
+        <button
+          className="btn"
+          onClick={() => {
+            const nextIds = toggleFavorite(meal.idMeal);
+            setFav(nextIds.includes(meal.idMeal));
+          }}
+        >
+          {fav ? "Fjarlægja úr uppáhaldi" : "Setja í uppáhald"}
+        </button>
+      </div>
 
       <img className="details-img" src={meal.strMealThumb} alt={meal.strMeal} />
 
