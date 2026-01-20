@@ -1,16 +1,44 @@
-# React + Vite
+Vefsíða sem hjálpar notendum að finna hugmyndir að kvöldmat, leita að uppskriftum og vista uppáhald. Verkefnið notar TheMealDB API til að sækja raunveruleg gögn.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+HELSTU EIGINLEIKAR
+• Forsíða með:
+• “Veldu fyrir mig” (random uppskrift)
+• Featured uppskriftir
+• Mood selector (velja eftir skapi)
+• Flokkasíða (categories)
+• Uppskriftasíða með:
+• hráefnum
+• leiðbeiningum
+• Uppáhald (favorites)
+• Vista uppskriftir
+• Fjarlægja án þess að opna uppskrift
+• Leit að uppskriftum
+• Pagination á flokkasíðum
+• 404 síða
+• Responsive design (virkar í síma)
 
-Currently, two official plugins are available:
+API
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Verkefnið notar:
 
-## React Compiler
+TheMealDB API
+https://www.themealdb.com/api.php
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Notaðir endpoints:
+• Random recipe
+• Categories
+• Filter by category
+• Search by name
+• Recipe details
 
-## Expanding the ESLint configuration
+TÆKNI
+• React
+• React Router
+• Vite
+• CSS
+• Fetch API
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+ATHUGASEMDIR
+• Verkefnið notar localStorage fyrir uppáhald
+• Allar síður eru routaðar með React Router
+• Pagination er notuð á flokkasíðum

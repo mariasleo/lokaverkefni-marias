@@ -124,7 +124,6 @@ export default function RecipeDetails() {
         </button>
       </div>
 
-      {/* IMAGE + INGREDIENTS SIDE BY SIDE */}
       <div className="details-top">
         <img
           className="details-img"
@@ -144,7 +143,6 @@ export default function RecipeDetails() {
         </div>
       </div>
 
-      {/* INSTRUCTIONS BELOW */}
       <div className="details-box" style={{ marginTop: 18 }}>
         <h2>Leiðbeiningar</h2>
         <p className="subtitle" style={{ whiteSpace: "pre-line" }}>
@@ -152,7 +150,6 @@ export default function RecipeDetails() {
         </p>
       </div>
 
-      {/* SIMILAR */}
       {similar.length > 0 && (
         <section style={{ marginTop: 48 }}>
           <div className="section-head">

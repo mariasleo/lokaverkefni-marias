@@ -5,23 +5,19 @@ export default function Recipes() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Read ?search= from URL
   const search = useMemo(() => {
     const params = new URLSearchParams(location.search);
     return (params.get("search") || "").trim();
   }, [location.search]);
 
-  // Categories (shown only when NOT searching)
   const [categories, setCategories] = useState([]);
   const [catLoading, setCatLoading] = useState(true);
   const [catError, setCatError] = useState("");
 
-  // Recipe search results (shown only when searching)
   const [results, setResults] = useState([]);
   const [resultsLoading, setResultsLoading] = useState(false);
   const [resultsError, setResultsError] = useState("");
 
-  // Load categories once (for normal mode)
   useEffect(() => {
     async function loadCategories() {
       try {
@@ -45,7 +41,6 @@ export default function Recipes() {
     loadCategories();
   }, []);
 
-  // Search recipes by name whenever search changes
   useEffect(() => {
     if (!search) {
       setResults([]);
@@ -92,7 +87,6 @@ export default function Recipes() {
         </div>
       </div>
 
-      {/* ============ SEARCH MODE (ONLY RECIPES) ============ */}
       {search && (
         <>
           {resultsLoading && <p className="subtitle">Leita að uppskriftum…</p>}
@@ -132,7 +126,6 @@ export default function Recipes() {
         </>
       )}
 
-      {/* ============ NORMAL MODE (CATEGORIES) ============ */}
       {!search && (
         <>
           {catLoading && <p className="subtitle">Sæki flokka…</p>}

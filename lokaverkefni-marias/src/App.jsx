@@ -7,6 +7,7 @@ import Recipes from "./pages/Recipes";
 import Category from "./pages/Category";
 import RecipeDetails from "./pages/RecipeDetails";
 import Favorites from "./pages/Favorites";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   const navigate = useNavigate();
@@ -123,6 +124,7 @@ export default function App() {
             <Route path="/recipes/:category" element={<Category />} />
             <Route path="/recipe/:id" element={<RecipeDetails />} />
             <Route path="/favorites" element={<Favorites />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </main>
